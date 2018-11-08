@@ -1,4 +1,4 @@
-package com.test.task.redis;
+package com.test.task.config.redis;
 
 import com.test.task.dal.domain.Car;
 import com.test.task.dal.domain.Truck;

@@ -1,6 +1,6 @@
-package com.test.task.redis;
+package com.test.task.config.redis;
 
-import com.test.task.TaskApplicationConfig;
+import com.test.task.config.TaskApplicationConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
