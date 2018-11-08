@@ -1,0 +1,12 @@
+# IDE and Build
+target/
+build/
+out/
+generated/
+classes/
+node_modules
+.idea
+*.iml
+.gradle
+.env
+*gradle/wrapper/*
