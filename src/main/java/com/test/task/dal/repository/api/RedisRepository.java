@@ -2,6 +2,7 @@ package com.test.task.dal.repository.api;
 
 import com.test.task.dal.domain.api.RedisEntity;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +23,8 @@ public interface RedisRepository<T extends RedisEntity> {
     Boolean hasKey(Object key);
 
     Set<Object> getKeys();
+
+    List<T> getValues();
 
     void removeAll();
 }

@@ -6,20 +6,20 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisClusterConfiguration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
+@EnableRedisRepositories
 public class RedisConfiguration {
 
-    @Autowired private TaskApplicationConfig applicationConfig;
+    @Autowired
+    private TaskApplicationConfig applicationConfig;
 
     @Bean
     public RedisClusterConfiguration getClusterConfig() {
-        RedisClusterConfiguration rcc = new RedisClusterConfiguration(applicationConfig.getNodes());
-        rcc.setMaxRedirects(applicationConfig.getMaxRedirects());
-        return rcc;
+        return new RedisClusterConfiguration(applicationConfig.getNodes());
     }
 
     @Bean
@@ -30,10 +30,11 @@ public class RedisConfiguration {
 
     @Bean
     @Qualifier("redis-template")
-    RedisTemplate<Object, Object> redisTemplate(@Qualifier("jedis-connection-factory") RedisConnectionFactory connectionFactory) {
+    RedisTemplate<Object, Object> redisTemplate(
+            @Qualifier("jedis-connection-factory") JedisConnectionFactory connectionFactory
+    ) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(connectionFactory);
-        template.getConnectionFactory();
         return template;
     }
 }

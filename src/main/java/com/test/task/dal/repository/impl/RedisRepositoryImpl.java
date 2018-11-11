@@ -4,14 +4,15 @@ import com.test.task.dal.domain.api.RedisEntity;
 import com.test.task.dal.repository.api.RedisRepository;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class RedisRepositoryImpl<T extends RedisEntity> implements RedisRepository<T> {
 
     private RedisTemplate<Object, Object> redisTemplate;
-    private String OBJECT_KEY;
+    private final String OBJECT_KEY;
 
     public RedisRepositoryImpl(Class<T> clazz, RedisTemplate<Object, Object> redisTemplate) {
         OBJECT_KEY = clazz.getSimpleName();
@@ -37,8 +38,7 @@ public class RedisRepositoryImpl<T extends RedisEntity> implements RedisReposito
     @Override
     @SuppressWarnings("unchecked")
     public Map<Object, T> findAll() {
-        return this.redisTemplate.opsForHash().entries(OBJECT_KEY).entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, e -> (T) e.getValue()));
+        return new HashMap<Object, T>((Map) this.redisTemplate.opsForHash().entries(OBJECT_KEY));
     }
 
     @Override
@@ -62,8 +62,13 @@ public class RedisRepositoryImpl<T extends RedisEntity> implements RedisReposito
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public List<T> getValues() {
+        return (List<T>) (Object) redisTemplate.opsForHash().values(OBJECT_KEY);
+    }
+
+    @Override
     public void removeAll() {
         redisTemplate.opsForHash().delete(OBJECT_KEY, this.getKeys().toArray());
     }
-
 }

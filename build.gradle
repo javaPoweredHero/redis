@@ -31,4 +31,5 @@ dependencies {
 	compileOnly('org.projectlombok:lombok')
 	compile 'com.google.guava:guava:21.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testCompileOnly('org.projectlombok:lombok')
 }

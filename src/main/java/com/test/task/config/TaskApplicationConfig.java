@@ -14,6 +14,4 @@ public class TaskApplicationConfig {
 
     @NotNull
     private List<String> nodes;
-    @NotNull
-    private Integer maxRedirects;
 }

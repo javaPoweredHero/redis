@@ -11,6 +11,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 public class RedisContainersConfiguration {
 
+    //may be another redis template required for specified container
+
     @Bean
     RedisContainer<Car> carContainer(@Qualifier("redis-template") RedisTemplate<Object, Object> redisTemplate) {
         return new RedisContainer<>(Car.class, redisTemplate);

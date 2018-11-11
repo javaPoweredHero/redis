@@ -5,11 +5,12 @@ import com.test.task.dal.repository.api.RedisRepository;
 import com.test.task.dal.repository.impl.RedisRepositoryImpl;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public class RedisContainer<T extends RedisEntity> implements Map<Object, T> {
+public class RedisContainer<T extends RedisEntity> extends AbstractMap<Object, T> {
 
     private final RedisRepository<T> redisRepository;
 
@@ -76,7 +77,7 @@ public class RedisContainer<T extends RedisEntity> implements Map<Object, T> {
 
     @Override
     public Collection<T> values() {
-        return redisRepository.findAll().values();
+        return redisRepository.getValues();
     }
 
     @Override
