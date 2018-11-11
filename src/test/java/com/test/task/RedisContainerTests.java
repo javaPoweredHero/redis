@@ -23,7 +23,7 @@ public class RedisContainerTests {
     @Autowired RedisContainer<Truck> truckContainer;
 
     @After
-    public void initialize() {
+    public void cleanUp() {
         carContainer.clear();
         truckContainer.clear();
         TestDataProvider.resetCounters();

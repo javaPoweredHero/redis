@@ -1,7 +1,7 @@
 package com.test.task;
 
 import com.test.task.config.TaskApplicationConfig;
-import com.test.task.dal.domain.Car;
+import com.test.task.dal.domain.Truck;
 import com.test.task.services.api.RedisManagerService;
 import com.test.task.services.impl.RedisContainer;
 import org.junit.After;
@@ -22,19 +22,19 @@ import java.util.Map;
 public class RedisManagerServiceTest {
 
     @Autowired RedisManagerService managerService;
-    @Autowired RedisContainer<Car> carContainer;
+    @Autowired RedisContainer<Truck> truckContainer;
     @Autowired TaskApplicationConfig applicationConfig;
-    private Map<Object, Car> carMap = TestDataProvider.buildCarMap(10);
+    private Map<Object, Truck> truckMap = TestDataProvider.buildTruckMap(10);
 
     @After
     public void cleanUp() {
         managerService.resetDefaults();
-        carContainer.clear();
+        truckContainer.clear();
     }
 
     @Before
     public void initialize() {
-        carContainer.putAll(carMap);
+        truckContainer.putAll(truckMap);
     }
 
     @Test
@@ -46,17 +46,17 @@ public class RedisManagerServiceTest {
     @Test(expected = RedisConnectionFailureException.class)
     public void unreachableNodeFails() {
         managerService.setClusterNodesConfig(Collections.singletonList(getUnreachableAddr()));
-        Assert.assertEquals(carMap, carContainer);
+        Assert.assertEquals(truckMap, truckContainer);
     }
 
     @Test(expected = RedisConnectionFailureException.class)
     public void resetDefaultsWorks() {
         managerService.setClusterNodesConfig(Collections.singletonList(getUnreachableAddr()));
         try {
-            carContainer.entrySet();
+            truckContainer.entrySet();
         } catch (RedisConnectionFailureException ex) {
             managerService.resetDefaults();
-            Assert.assertEquals(carMap, carContainer);
+            Assert.assertEquals(truckMap, truckContainer);
             throw ex;
         }
         Assert.fail();
@@ -65,14 +65,14 @@ public class RedisManagerServiceTest {
     @Test(expected = RedisConnectionFailureException.class)
     public void removeNodeWorks() {
         applicationConfig.getNodes().forEach(s -> managerService.removeNode(s));
-        carContainer.entrySet();
+        truckContainer.entrySet();
     }
 
     @Test()
     public void addNodeWorks() {
         applicationConfig.getNodes().forEach(s -> managerService.removeNode(s));
         managerService.addNode(applicationConfig.getNodes().iterator().next());
-        carContainer.entrySet();
+        truckContainer.entrySet();
     }
 
     private static String getUnreachableAddr() {

@@ -33,6 +33,15 @@ public class TestDataProvider {
                 .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     }
 
+    public Map<Object, Truck> buildTruckMap(int size) {
+        return Stream.generate(() -> {
+            Truck truck = buildTruck();
+            return new AbstractMap.SimpleEntry<Object, Truck>(truck.getKey(), truck);
+        })
+                .limit(size)
+                .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
+    }
+
     public Car buildCar() {
         return new Car()
                 .setKey(String.valueOf(++carCount))
